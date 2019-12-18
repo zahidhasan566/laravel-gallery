@@ -19,6 +19,9 @@ class PhotosController extends Controller
       ]);
 
       // Get filename with extension
+       // $file = $request->file('photo');
+        //$filenameWithExt = $file->move('photo', $file->getClientOriginalName());
+
       $filenameWithExt = $request->file('photo')->getClientOriginalName();
 
       // Get just the filename
@@ -28,10 +31,32 @@ class PhotosController extends Controller
       $extension = $request->file('photo')->getClientOriginalExtension();
 
       // Create new filename
-      $filenameToStore = $filename.'_'.time().'.'.$extension;
+      //$filenameToStore = $filename.'_'.time().'.'.$extension;
+      $filenameToStore = $filename.'.'.$extension;
 
       // Uplaod image
-      $path= $request->file('photo')->storeAs('public/photos/'.$request->input('album_id'), $filenameToStore);
+
+
+
+      //$path= $request->file('photo')->move('public/photos/'.$request->input('album_id'), $filenameToStore);
+
+
+        //$new2=$request->input('album_id').$filenameToStore;
+       // $path= $request->file('photo')->move('public/photos'.$new2);
+       // $file->move('photos', $file->getClientOriginalName())
+        $aid=$request->input('album_id');
+        echo($aid);
+
+        $file= $request->file('photo');
+        //File::MakeDirectory('storage/photos' . $aid);
+       // $file->move('storage/photos', $aid);
+        $file->move('storage/photos/'.$aid, $filenameToStore);
+       //$file->store("storage/photos/".$aid, $filenameToStore);
+
+
+
+
+
 
       // Upload Photo
       $photo = new Photo;
@@ -48,16 +73,17 @@ class PhotosController extends Controller
 
     public function show($id){
       $photo = Photo::find($id);
+      //echo($photo->photo);
       return view('photos.show')->with('photo', $photo);
     }
 
     public function destroy($id){
       $photo = Photo::find($id);
 
-      if(Storage::delete('public/photos/'.$photo->album_id.'/'.$photo->photo)){
+      //if(Storage::delete('public/photos/'.$photo->album_id.'/'.$photo->photo)){
         $photo->delete();
 
         return redirect('/')->with('success', 'Photo Deleted');
-      }
+      //}
     }
 }

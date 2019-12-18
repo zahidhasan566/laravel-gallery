@@ -9,6 +9,7 @@ class AlbumsController extends Controller
 {
     public function index(){
       $albums = Album::with('Photos')->get();
+
       return view('albums.index')->with('albums', $albums);
     }
 
@@ -32,7 +33,8 @@ class AlbumsController extends Controller
       $extension = $request->file('cover_image')->getClientOriginalExtension();
 
       // Create new filename
-      $filenameToStore = $filename.'_'.time().'.'.$extension;
+      //$filenameToStore = $filename.'_'.time().'.'.$extension;
+     $filenameToStore = $filename.'.'.$extension;
 
       // Uplaod image
       $path= $request->file('cover_image')->storeAs('public/album_covers', $filenameToStore);
@@ -50,6 +52,7 @@ class AlbumsController extends Controller
 
     public function show($id){
       $album = Album::with('Photos')->find($id);
+      //echo($album->photos);
       return view('albums.show')->with('album', $album);
     }
 }

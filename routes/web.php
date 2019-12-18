@@ -10,8 +10,10 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/login', 'LoginController@index')->name('login.index');
+Route::post('/login', 'LoginController@verify');
 
-Route::get('/', 'AlbumsController@index');
+Route::get('/home', 'AlbumsController@index')->name('home.index');
 Route::get('/albums', 'AlbumsController@index');
 Route::get('/albums/create', 'AlbumsController@create');
 Route::get('/albums/{id}', 'AlbumsController@show');
@@ -21,3 +23,8 @@ Route::get('/photos/create/{id}', 'PhotosController@create');
 Route::post('/photos/store', 'PhotosController@store');
 Route::get('/photos/{id}', 'PhotosController@show');
 Route::delete('/photos/{id}', 'PhotosController@destroy');
+
+Route::get('/crop/{id}/{id2}', 'Crop@index');
+Route::post('/crop', 'Crop@imageCropPost')->name('upload.image');
+
+Route::get('/rotate/{id}/{id2}', 'Rotate@index');
